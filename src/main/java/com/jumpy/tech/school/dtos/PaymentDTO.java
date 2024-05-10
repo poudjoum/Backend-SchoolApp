@@ -4,15 +4,10 @@ import java.time.LocalDate;
 
 import com.jumpy.tech.school.entites.PaymentStatus;
 import com.jumpy.tech.school.entites.PaymentType;
-import com.jumpy.tech.school.entites.Student;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-
 
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class PaymentDTO {
@@ -22,6 +17,6 @@ public class PaymentDTO {
 	private double amount;
 	private PaymentType type;
 	private PaymentStatus status;
-	private Student student;
+	private String studentCode;
 
 }

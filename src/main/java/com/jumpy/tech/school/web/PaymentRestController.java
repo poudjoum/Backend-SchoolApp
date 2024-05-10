@@ -26,7 +26,7 @@ import com.jumpy.tech.school.entites.Student;
 import com.jumpy.tech.school.repository.PaymentRepository;
 import com.jumpy.tech.school.repository.StudentRepository;
 import com.jumpy.tech.school.services.PaymentService;
-
+import com.jumpy.tech.school.dtos.*;
 @RestController
 @CrossOrigin("*")
 
@@ -85,12 +85,9 @@ public class PaymentRestController {
 		return paymentService.updatePaymentStatus(status, id);
 	}
 	@PostMapping(path="payments",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
-	public Payment savePayment(@RequestParam MultipartFile file, 
-			LocalDate date, 
-			double amount,
-			PaymentType type, 
-			String studentCode) throws IOException {
-		return this.paymentService.savePayment(file, date, amount, type, studentCode);
+	public Payment savePayment(@RequestParam ("file")MultipartFile file, PaymentDTO paymentDto)
+			 throws IOException {
+		return this.paymentService.savePayment(file, paymentDto);
 	
 	}
 	

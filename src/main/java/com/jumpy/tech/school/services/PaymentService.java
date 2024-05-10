@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jumpy.tech.school.dtos.PaymentDTO;
 import com.jumpy.tech.school.entites.Payment;
 import com.jumpy.tech.school.entites.PaymentStatus;
 import com.jumpy.tech.school.entites.PaymentType;
@@ -40,11 +41,8 @@ public class PaymentService {
 	
 	@PostMapping(path="/payments", consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
 	public Payment savePayment(
-			MultipartFile file, 
-			LocalDate date, 
-			double amount,
-			PaymentType type, 
-			String studentCode) throws IOException {
+			MultipartFile file, PaymentDTO paymentDto
+		) throws IOException {
 		Path folderPath=Paths.get(System.getProperty("user.home"),"SchoolName","Payments");
 		if(!Files.exists(folderPath)) {
 			Files.createDirectories(folderPath);
@@ -54,11 +52,12 @@ public class PaymentService {
 		Path filePath=Paths.get(System.getProperty("user.home"),"SchoolName","Payments",fileName+".pdf");
 		
 		Files.copy(file.getInputStream(), filePath);
-		Student student=studentRepository.findByCode(studentCode);
+		Student student=studentRepository.findByCode(paymentDto.getStudentCode());
 		Payment pay=Payment.builder()
-				.date(date)
-				.type(type)
+				.date(paymentDto.getDate())
+				.type(paymentDto.getType())
 				.student(student)
+				.amount(paymentDto.getAmount())
 				.status(PaymentStatus.CREATED)
 				.file(filePath.toUri().toString())
 				.build();
